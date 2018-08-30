@@ -1,3 +1,5 @@
+import { fromEvent, of } from 'rxjs';
+import { scan } from 'rxjs/operators';
 import { LogActionModel } from "./models/log-action.model";
 import { TypesEnum } from "./models/types-enum.model";
 
@@ -10,7 +12,9 @@ class App {
 
     constructor() {
         // Adding Form Submit listener in the class construction | new App()
-        this.noteForm.addEventListener('submit', this.updateList.bind(this), true);
+        // this.noteForm.addEventListener('submit', this.updateList.bind(this), true);
+        fromEvent(this.noteForm, 'submit')
+            .subscribe((event: Event) => this.updateList(event));
     }
 
     updateList(e: Event): void {
@@ -27,12 +31,16 @@ class App {
 
         const itemExists = this.checkExistingItem(id);
         const node = this.setListItem(id, value);
-
         this.noteInput.value = '';
+
         if (!itemExists) {
+            this.updateCounter(TypesEnum.Inserted as TypesEnum);
             this.noteList.appendChild(node);
+
             return this.printLog({ id, value, type: TypesEnum.Inserted });
         }
+
+        this.updateCounter(TypesEnum.Updated as TypesEnum);
         this.printLog({ id, value, type: TypesEnum.Updated });
     }
 
@@ -64,7 +72,15 @@ class App {
         // You can change a variable name after assigning the values
         const { id, innerText: value } = item;
         item.remove();
+
+        this.updateCounter(TypesEnum.Deleted as TypesEnum);
         this.printLog({ id, value, type: TypesEnum.Deleted });
+    }
+
+    updateCounter(type: TypesEnum): void {
+        const actionType = TypesEnum[type].toLocaleLowerCase();
+        const counter = document.querySelector(`#${actionType}`) as HTMLInputElement;
+        counter.innerText = `${+counter.innerText + 1}`;
     }
 
     // The '?' after a parameter declaration indicates that the same it's optional

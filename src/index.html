@@ -17,6 +17,12 @@
             margin: auto;
             text-align: center;
         }
+        .info-container {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-columns: repeat(3, minmax(32%, 1fr));
+            margin-bottom: 30px;
+        }
         ul {
             list-style-type: none;
             padding-left: 0;
@@ -39,6 +45,12 @@
 
     <div class="main-container">
         <h1>Let's play with Typescript</h1>
+
+        <div class="info-container">
+            <label>Inserted: <b id="inserted">0</b></label>
+            <label>Updated: <b id="updated">0</b></label>
+            <label>Deleted: <b id="deleted">0</b></label>
+        </div>
 
         <form id="note-form" action="#">
             <input id="note-input" type="text">
