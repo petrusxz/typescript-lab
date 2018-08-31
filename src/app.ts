@@ -1,7 +1,9 @@
-import { fromEvent, of } from 'rxjs';
-import { scan } from 'rxjs/operators';
-import { LogActionModel } from "./models/log-action.model";
-import { TypesEnum } from "./models/types-enum.model";
+// https://bendyworks.com/blog/getting-started-with-typescript-and-webpack
+
+import { fromEvent, Observable, interval } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { LogActionModel } from './models/log-action.model';
+import { TypesEnum } from './models/types-enum.model';
 
 class App {
 
@@ -9,18 +11,30 @@ class App {
     noteForm = <HTMLInputElement>document.querySelector('#note-form');
     noteInput = <HTMLInputElement>document.querySelector('#note-input');
     noteList = <HTMLInputElement>document.querySelector('#note-list');
+    time = <HTMLInputElement>document.querySelector('#time');
 
     constructor() {
+        // Adding a watch to demonstrate Observables
+        this.initWatch();
+        
         // Adding Form Submit listener in the class construction | new App()
         // this.noteForm.addEventListener('submit', this.updateList.bind(this), true);
         fromEvent(this.noteForm, 'submit')
             .subscribe((event: Event) => this.updateList(event));
     }
 
+    initWatch(): void {
+        const timer = new Observable((observer) => {
+            setInterval(() => observer.next(new Date().toTimeString()), 1000);
+        });
+
+        timer.subscribe((time) => { this.time.innerText = time as string })
+    }
+
     updateList(e: Event): void {
         e.preventDefault();
 
-        // Treating null values from input
+        // Treating null values from input => <input id="note-input" type="text">
         if (!this.noteInput.value) {
             return this.printLog();
         }
@@ -60,6 +74,7 @@ class App {
     }
 
     setListItem(id: string, value: string): Node {
+        // <li id="hello" onclick="deleteListItem()">Hello</li>
         const node = document.createElement('li');
         node.id = id;
         node.textContent = value;
