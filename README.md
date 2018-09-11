@@ -24,8 +24,11 @@ Reference to configure a Typescript/Webpack project:
 #### Useful Links
 
 [Typescript](https://www.typescriptlang.org/docs/home.html)
+
 [Promises (Async/Await)](https://medium.freecodecamp.org/avoiding-the-async-await-hell-c77a0fb71c4c)
+
 [RxJS](https://www.learnrxjs.io/)
+
 
 #### Training Presentation
 
