@@ -1,5 +1,3 @@
-// https://bendyworks.com/blog/getting-started-with-typescript-and-webpack
-
 import { fromEvent, Observable, interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LogActionModel } from './models/log-action.model';
@@ -16,7 +14,7 @@ class App {
     constructor() {
         // Adding a watch to demonstrate Observables
         this.initWatch();
-        
+
         // Adding Form Submit listener in the class construction | new App()
         // this.noteForm.addEventListener('submit', this.updateList.bind(this), true);
         fromEvent(this.noteForm, 'submit')
@@ -24,11 +22,16 @@ class App {
     }
 
     initWatch(): void {
-        const timer = new Observable((observer) => {
-            setInterval(() => observer.next(new Date().toTimeString()), 1000);
-        });
+        // const timer = new Observable((observer) => {
+        //     setInterval(() => observer.next(new Date().toTimeString()), 1000);
+        // });
 
-        timer.subscribe((time) => { this.time.innerText = time as string })
+        const timer = interval(1000).pipe(
+            tap(() => this.time.innerText = new Date().toTimeString())
+        );
+
+        const timerSubscription = timer.subscribe();
+        // setTimeout(() => timerSubscription.unsubscribe(), 5000);
     }
 
     updateList(e: Event): void {
