@@ -1,4 +1,4 @@
-# ** Typescript Lab **
+# Typescript Lab
 
 
 #### Setup
@@ -14,7 +14,9 @@ Then run the project:
 npm run serve
 ```
 
-Reference for configure a Typescript/Webpack project:
+
+
+Reference to configure a Typescript/Webpack project:
 
     https://bendyworks.com/blog/getting-started-with-typescript-and-webpack
 
